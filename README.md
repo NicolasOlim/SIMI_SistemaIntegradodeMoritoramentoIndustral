@@ -29,23 +29,7 @@ Este projeto foi desenvolvido como parte da atividade de **Documentação, Persi
 - [x] **Swagger:** Documentação completa com comentários XML ativada.
 - [x] **Versionamento:** Repositório público no GitHub.
 
-## 🔧 Como Executar o Projeto
 
-1.  **Clonar o repositório:**
-    ```bash
-    git clone [https://github.com/SEU_USUARIO/NOME_DO_REPOSITORIO.git](https://github.com/SEU_USUARIO/NOME_DO_REPOSITORIO.git)
-    ```
-2.  **Abrir a Solução:**
-    Abra o arquivo `.sln` no Visual Studio 2022.
-3.  **Configurar Inicialização:**
-    Clique com o botão direito na **Solução** > **Propriedades** > **Projetos de Inicialização** e selecione "Vários projetos de inicialização". Defina como **Iniciar**:
-    - `ApiProcessamento`
-    - `SensorSimulator`
-    - `SensorInterface`
-4.  **Executar:**
-    Pressione `F5`. A API abrirá o Swagger, o simulador começará a enviar dados e a interface mostrará os resultados.
-
----
 
 ## 📖 Documentação da API (Endpoints)
 
