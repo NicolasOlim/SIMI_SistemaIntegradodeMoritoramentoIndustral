@@ -1,0 +1,79 @@
+﻿<Window x:Class="SensorInterface.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SensorInterface"
+        mc:Ignorable="d"
+        Title="Monitoramento de Sensores (SIMI)" Height="520" Width="800"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F7FA">
+
+    <StackPanel Margin="20" Orientation="Vertical">
+
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,0,0,15">
+            <TextBlock Text="Painel de Monitoramento" FontSize="26" FontWeight="Bold" Foreground="#2C3E50" HorizontalAlignment="Center"/>
+            <TextBlock Text="Sistema Integrado de Monitoramento Industrial" FontSize="14" Foreground="#7F8C8D" Margin="0,2,0,0" HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <Button Command="{Binding CarregarSensoresCommand}"
+                FontSize="14" FontWeight="SemiBold"
+                Foreground="White" Background="#3498DB"
+                Padding="20,10" BorderThickness="0"
+                Cursor="Hand" HorizontalAlignment="Center" Margin="0,0,0,25">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="🔄" Margin="0,0,8,0"/>
+                    <TextBlock Text="Atualizar Dados"/>
+                </StackPanel>
+            </Button.Content>
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="6"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+            <Border Background="White" CornerRadius="10" Padding="15" Margin="0,0,10,0" Width="330">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="15" Color="#D0D5DD" ShadowDepth="2" Opacity="0.4"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="🌡️ Temperatura" FontSize="18" FontWeight="SemiBold" Foreground="#E74C3C" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+
+                    <ListBox Height="220" ItemsSource="{Binding Temperaturas}" BorderThickness="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#FEF9F8" BorderBrush="#FADBD8" BorderThickness="1" CornerRadius="6" Margin="0,0,0,8" Padding="12">
+                                    <TextBlock Text="{Binding StringFormat={}{0:N1} ºC}" FontSize="16" FontWeight="Medium" Foreground="#C0392B" HorizontalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+
+            <Border Background="White" CornerRadius="10" Padding="15" Margin="10,0,0,0" Width="330">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="15" Color="#D0D5DD" ShadowDepth="2" Opacity="0.4"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="💧 Umidade" FontSize="18" FontWeight="SemiBold" Foreground="#3498DB" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+
+                    <ListBox Height="220" ItemsSource="{Binding Umidades}" BorderThickness="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#F4FAFE" BorderBrush="#D6EAF8" BorderThickness="1" CornerRadius="6" Margin="0,0,0,8" Padding="12">
+                                    <TextBlock Text="{Binding StringFormat={}{0:N1} %}" FontSize="16" FontWeight="Medium" Foreground="#2980B9" HorizontalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </StackPanel>
+</Window>
