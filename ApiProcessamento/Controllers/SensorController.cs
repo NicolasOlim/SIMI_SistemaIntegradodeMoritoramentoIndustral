@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Shared;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace ApiProcessamento.Controllers
 {
@@ -12,14 +14,45 @@ namespace ApiProcessamento.Controllers
     [Route("api/v1/sensores")]
     public class SensorController : ControllerBase
     {
-        private readonly IOptions<ApiConfig> _config;
+        private readonly IOptionsSnapshot<ApiConfig> _config;
         private readonly AppDbContext _context;
 
-        public SensorController(IOptions<ApiConfig> config, AppDbContext context)
+        public SensorController(IOptionsSnapshot<ApiConfig> config, AppDbContext context)
         {
             _config = config;
             _context = context;
         }
+
+        [HttpPut("temperatura/{novaTemperatura}")]
+        public IActionResult AtualizarTemperatura(double novaTemperatura)
+        {
+            try
+            {
+                
+                var caminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
+
+               
+                var jsonAtual = System.IO.File.ReadAllText(caminhoArquivo);
+                var jsonNode = JsonNode.Parse(jsonAtual);
+
+                
+                if (jsonNode != null && jsonNode["ApiConfig"] != null)
+                {
+                    jsonNode["ApiConfig"]["MaxTemperatura"] = novaTemperatura;
+                }
+
+               
+                var opcoesFormato = new JsonSerializerOptions { WriteIndented = true };
+                System.IO.File.WriteAllText(caminhoArquivo, jsonNode.ToJsonString(opcoesFormato));
+
+                return Ok(new { mensagem = $"Temperatura máxima alterada para {novaTemperatura} com sucesso!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao atualizar configuração: {ex.Message}");
+            }
+        }
+    
 
         /// <summary>
         /// Metodo para adicionar os valores do Sensores.
@@ -40,13 +73,26 @@ namespace ApiProcessamento.Controllers
         {
             try
             {
+                // Agora o _config.Value sempre terá o valor atualizado do appsettings.json
+                var limiteAtual = _config.Value.MaxTemperatura;
+
+                if (sensor.Temperatura > limiteAtual)
+                {
+                    return BadRequest($"Acesso Negado: {sensor.Temperatura}ºC excede o limite de {limiteAtual}ºC.");
+                }
+
+                if (sensor.Umidade > _config.Value.MaxUmidade)
+                {
+                    return BadRequest($"Acesso Negado: Umidade {sensor.Umidade}% excede o limite.");
+                }
+
                 _context.Add(sensor);
                 await _context.SaveChangesAsync();
                 return Ok(sensor);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Erro ao salvar: {ex.Message}");
+                return StatusCode(500, $"Erro: {ex.Message}");
             }
         }
 

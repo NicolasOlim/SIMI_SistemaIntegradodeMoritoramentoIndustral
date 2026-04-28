@@ -18,7 +18,7 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(xmlPath);
 }
 );
-
+builder.Services.Configure<ApiConfig>(builder.Configuration.GetSection("ApiConfig"));
 builder.Services.AddDbContext<AppDbContext>(options =>
        options.UseSqlite("Data Source=app.db"));
 

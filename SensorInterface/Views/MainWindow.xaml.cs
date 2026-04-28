@@ -21,6 +21,9 @@ namespace SensorInterface
         {
             InitializeComponent();
             DataContext = new MainViewModel();
+
         }
+
+       
     }
 }
